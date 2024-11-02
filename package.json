@@ -1,0 +1,20 @@
+{
+  "name": "devMatch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",  
+    "dev": "nodemon src/app.js"   
+  },
+  "keywords": [
+    "nodjs",
+    "javascript",
+    "mongodb"
+  ],
+  "author": "madhuri",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
