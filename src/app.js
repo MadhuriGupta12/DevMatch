@@ -1,17 +1,18 @@
 const express=require("express");
 const app=express();
 require("./config/database");
-
+app.use(express.json());
 const User=require("./models/user");
+
 app.post("/signup",async(req,res)=>{
-    const user= new User({
-        firstName:"madhuri",
-        lastName:"gupta",
-        email:"madhuri@gmail.com",
-        password:"madhu123",
-    });
-    await user.save();
-    res.send("sb kuch store ho gya");
+
+    const user= new User(req.body);
+    try{
+        await user.save();
+        res.send("all data is stored");
+    }catch(err){
+        res.status(404).send("something are error"+err.message);
+    }
 });
 
 
