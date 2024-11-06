@@ -1,12 +1,38 @@
 const express=require("express");
 const app=express();
-const {adminAuth}=require("./middleware/auth");
+require("./config/database");
 
-app.use('/admin',adminAuth);
-app.use("/admin/find",(req,res,next)=>{
-    res.send("information le lo");
+const User=require("./models/user");
+app.post("/signup",async(req,res)=>{
+    const user= new User({
+        firstName:"madhuri",
+        lastName:"gupta",
+        email:"madhuri@gmail.com",
+        password:"madhu123",
+    });
+    await user.save();
+    res.send("sb kuch store ho gya");
 });
-app.use("/admin/delete",(req,res,next)=>{
-    res.send("information delete kr do");
-});
+
+
+
+// app.post("/signup", async (req, res) => {
+//     try {
+//         const { firstName, lastName, email, password } = req.body;
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const user = new User({
+//             firstName:"madhuri",
+//             lastName:"gupta",
+//             email:"madhuri@",
+//             password: hashedPassword,
+//         });
+
+//         await user.save();
+//         res.status(201).send("User successfully stored");
+//     } catch (error) {
+//         res.status(500).send("An error occurred: " + error.message);
+//     }
+// });
+
 app.listen(3000);
