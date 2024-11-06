@@ -3,37 +3,60 @@ const app=express();
 require("./config/database");
 app.use(express.json());
 const User=require("./models/user");
-
-app.post("/signup",async(req,res)=>{
+//added the new data
+app.post("/signup",(req,res)=>{
 
     const user= new User(req.body);
     try{
-        await user.save();
-        res.send("all data is stored");
+        user.save();
+        res.send("all data stored");
     }catch(err){
         res.status(404).send("something are error"+err.message);
     }
 });
 
+   //get the data
+app.get("/user",async(req,res)=>{
+    const userEmail=req.body.email;
+    try{
+    const user= await User.findOne({email:userEmail});
+    if(user.length===0){
+        res.status(403).send("kuch error hai");
+    }else{
+        res.send(user);
+    }
+   }catch(err){
+    res.status(400).send("kuch error");
+   } 
+});
 
+app.delete("/delete",async(req,res)=>{
+    const userid=req.body.userId;
+    try{
+    const user= await User.findByIdAndDelete(userid);
+        res.send("delete succesfull");
+   }catch(err){
+    res.status(400).send("kuch error");
+   } 
+});
 
-// app.post("/signup", async (req, res) => {
-//     try {
-//         const { firstName, lastName, email, password } = req.body;
-//         const hashedPassword = await bcrypt.hash(password, 10);
+app.patch("/update",async(req,res)=>{
+    const userId=req.body.userId;
+    const data=req.body;
+    try{
+    await User.findByIdAndUpdate({_id:userId},data);
+        res.send("your data is updated");
+    }catch(err){
+    res.status(400).send("kuch error");
+   } 
+});
 
-//         const user = new User({
-//             firstName:"madhuri",
-//             lastName:"gupta",
-//             email:"madhuri@",
-//             password: hashedPassword,
-//         });
-
-//         await user.save();
-//         res.status(201).send("User successfully stored");
-//     } catch (error) {
-//         res.status(500).send("An error occurred: " + error.message);
-//     }
-// });
-
+app.get("/feed",async(req,res)=>{
+    try{
+    const user= await User.find({}); 
+        res.send(user);
+   }catch(err){
+    res.status(400).send("kuch error");
+   } 
+});
 app.listen(3000);
