@@ -40,14 +40,30 @@ app.delete("/delete",async(req,res)=>{
    } 
 });
 
-app.patch("/update",async(req,res)=>{
-    const userId=req.body.userId;
+app.patch("/update:userId",async(req,res)=>{
+    // user id ni bhi raha to update ho jayega
+    const userId=req.params?.userId;
     const data=req.body;
+
+    const ALLOWED_UPDATES=["firstName","age","lastName","skill","gender","photourl","about"];
+    const isUpdatedAllowed=object.keys(data).every((k)=>
+        ALLOWED_UPDATES.includes(k)
+    );
+    if(!isUpdatedAllowed){
+        res.status(405).send("update not allowed")
+    }
+    if(data?.skill.length >10){
+        throw new Error("skill can not grater than 10")
+    }
     try{
-    await User.findByIdAndUpdate({_id:userId},data);
+    const user=await User.findByIdAndUpdate({_id:userId},data,{
+    returnDocument:"after",
+    runValidators:true,
+    });
+    console.log(user);
         res.send("your data is updated");
     }catch(err){
-    res.status(400).send("kuch error");
+    res.status(400).send("kuch error"+err.message);
    } 
 });
 
