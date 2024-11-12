@@ -53,6 +53,10 @@ requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
 
 
 // status kya aaya aur kis user se aaya
+//madhuri =>nitesh
+//loggedInId ==toUserId
+//status=interested
+//request Id should be valid
 requestRouter.post("/request/review/:status/:requestId",adminAuth,async(req,res)=>{
     try{
         const loggedInUser=req.user;

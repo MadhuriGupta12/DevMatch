@@ -3,7 +3,7 @@ const { applyTimestamps } = require("./user");
 const connectionRequestSchema=new mongoose.Schema({
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: "User", //referance karega (routs ke user me jayega ) data jaise name lastname sb print hoga
+       ref: "User", //referance karega (routs ke user me jayega ) data jaise name lastname sb print hoga
         required:true,
     },
     toUserId:{
@@ -31,5 +31,5 @@ if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
 }
 next();
 })
-const connectionRequestModel=new mongoose.model("connectionRequest",connectionRequestSchema);
+const connectionRequestModel=new mongoose.model("ConnectionRequest",connectionRequestSchema);
 module.exports=connectionRequestModel; 

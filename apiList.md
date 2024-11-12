@@ -15,6 +15,6 @@ POST-request review/accepted:requestId
 POST-request review/rejected:requestId
 
 # user router
-GET-user/request/receive
+GET-user/request/pending
 GET-user/connection
 GET-user/feed
