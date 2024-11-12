@@ -5,6 +5,8 @@ const User=require("../models/user");
 const ConnectionRequest=require("../models/connectionRequest.js");
 
 //status kya bhej rhe hai aur kis user ko bhej rahe hai
+
+
 requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
     try{
         const fromUserId=req.user._id;
@@ -37,7 +39,7 @@ requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
         status,
         });
 
-        const data=await connectionRequest.save();
+        const data= await connectionRequest.save();
         //output dikhayega
         res.json({
             message:
@@ -48,4 +50,35 @@ requestRouter.post("/request/send/:status/:toUserId",adminAuth,async(req,res)=>{
         res.status(400).send("kuch error : "+err.message);
     }
 });
+
+
+// status kya aaya aur kis user se aaya
+requestRouter.post("/request/review/:status/:requestId",adminAuth,async(req,res)=>{
+    try{
+        const loggedInUser=req.user;
+        const {status,requestId}=req.params;
+
+        const allowedStatus=["accepted","rejected"];
+        if(!allowedStatus.includes(status) ){
+            return res.status(480).json({message: "invalid status"+status});
+        }
+
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id:requestId,
+            toUserId:loggedInUser._id,
+            status: "interested",
+        });
+        if(!connectionRequest){
+            return res.status(405).json({message:"connection request not found"});
+        }
+        
+        connectionRequest.status=status;
+        const data =await connectionRequest.save();
+
+        res.json({message: "connection request "+ status ,data});
+    }catch(err){
+        res.status(400).send("kuch error : "+err.message);
+    }
+});
+
 module.exports=requestRouter;

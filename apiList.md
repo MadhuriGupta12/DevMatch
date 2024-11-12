@@ -6,15 +6,15 @@ Post-logout
 # profile router
 GET-profile/view
 PATCH-profile/edit
-PATCH-profile/password
+ //PATCH-profile/password
 
- # connection router
-POST-request send/intrested:userid
-POST-request send/ignore:userid
-POST-request review/accepted:requestid
-POST-request review/rejected:requestid
+ # connection router 
+POST-request send/intrested:userId 
+POST-request send/ignore:userId
+POST-request review/accepted:requestId
+POST-request review/rejected:requestId
 
 # user router
+GET-user/request/receive
 GET-user/connection
-GET-user/request
 GET-user/feed

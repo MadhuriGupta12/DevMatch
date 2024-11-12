@@ -3,6 +3,7 @@ const { applyTimestamps } = require("./user");
 const connectionRequestSchema=new mongoose.Schema({
     fromUserId:{
         type:mongoose.Schema.Types.ObjectId,
+        ref: "User", //referance karega (routs ke user me jayega ) data jaise name lastname sb print hoga
         required:true,
     },
     toUserId:{
@@ -28,6 +29,7 @@ const connectionRequest=this;
 if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
     throw new Error("can not send to yourself");
 }
+next();
 })
 const connectionRequestModel=new mongoose.model("connectionRequest",connectionRequestSchema);
 module.exports=connectionRequestModel; 
